@@ -5,7 +5,7 @@ package singleton;
  */
 public class Singleton2 {
 
-    private static Singleton2 inst = new Singleton2();
+    private static volatile Singleton2 inst = new Singleton2();
 
     private Singleton2() {
     }

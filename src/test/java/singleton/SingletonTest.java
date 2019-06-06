@@ -16,6 +16,9 @@ public class SingletonTest {
         Singleton1 s3 = Singleton1.getInstance();
         Singleton1 s4 = Singleton1.getInstance();
         Assert.assertEquals(s3, s4);
+        Singleton2 s33 = Singleton2.getInstance();
+        Singleton2 s44 = Singleton2.getInstance();
+        Assert.assertEquals(s33, s44);
         Singleton3 s5 = Singleton3.getInstance();
         Singleton3 s6 = Singleton3.getInstance();
         Assert.assertEquals(s5, s6);
