@@ -1,5 +1,6 @@
 public class Object {
-    public final native Class<?> getClass();
+
+    public String toString() { return getClass().getName() + "@" + Integer.toHexString(hashCode()); }
 
     public native int hashCode();
     public boolean equals(Object obj) { return (this == obj); }
@@ -11,6 +12,6 @@ public class Object {
     public final void wait() throws InterruptedException { wait(0); }
 
     protected native Object clone() throws CloneNotSupportedException; //"shallow copy"
-    public String toString() { return getClass().getName() + "@" + Integer.toHexString(hashCode()); }
+    public final native Class<?> getClass();
     protected void finalize() throws Throwable { }
 }
