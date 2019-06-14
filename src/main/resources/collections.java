@@ -22,6 +22,8 @@ public interface Collection<E> extends Iterable<E> {
     default Spliterator<E> spliterator();
     default Stream<E> stream();
     default Stream<E> parallelStream();
+    // !! from Iterable !!
+    default void forEach(Consumer<? super T> action); //to be the target of the "for-each loop" statement
 }
 public interface Queue<E> extends java.util.Collection<E> {
     boolean add(E e);           //Inserts the specified element into this queue
@@ -208,3 +210,22 @@ public interface NavigableMap<K,V> extends java.util.SortedMap<K,V> {
     java.util.SortedMap<K,V> headMap(K toKey);
     java.util.SortedMap<K,V> tailMap(K fromKey);
 } //TreeMap
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+public class Collections {
+// sort, binarySearch, reverse, shuffle, swap, fill, copy, min, max, rotate, replaceAll, indexOfSubList,
+// unmodifiable... Collection, Set, SortedSet, NavigableSet, List, RandomAccessList, Map, SortedMap, NavigableMap
+// synchronized... Collection, Set, SortedSet, NavigableSet, List, RandomAccessList, Map, SortedMap, NavigableMap
+// Dynamically typesafe collection wrappers
+// checked... Collection, Queue, Set, SortedSet, NavigableSet, List, RandomAccessList, Map, SortedMap, NavigableMap
+// Empty collections
+// empty... Iterator, ListIterator, Enumeration, Set, SortedSet, NavigableSet, List, Map, SortedMap, NavigableMap
+// Singleton collections
+// singleton...Iterator, Spliterator, List, Map
+// Miscellaneous
+//
+}
+public class Arrays {
+    public static <T> java.util.List<T> asList(T... a) {
+        return new Arrays.ArrayList<>(a);
+    }
+}
