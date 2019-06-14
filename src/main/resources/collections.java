@@ -175,7 +175,7 @@ public interface Map<K,V> {
     default V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction);
     default V compute(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction);
     default V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction);
-}   //HashMap, Hashtable, ConcurrentHashMap, LinkedHashMap,
+}   //HashMap, Hashtable, ConcurrentHashMap, LinkedHashMap, WeakHashMap
 public interface SortedMap<K,V> extends java.util.Map<K,V> {
     Comparator<? super K> comparator();
     java.util.SortedMap<K,V> subMap(K fromKey, K toKey);
@@ -228,4 +228,8 @@ public class Arrays {
     public static <T> java.util.List<T> asList(T... a) {
         return new Arrays.ArrayList<>(a);
     }
+}
+
+public class ReferenceQueue<T> {
+    //... для (Soft, Weak, Phantom)Reference и WeakHashMap
 }
