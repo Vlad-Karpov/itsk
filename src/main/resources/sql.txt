@@ -11,3 +11,14 @@
 3) уровни изоляции транзакций
 4) 2 способа партиционирования
 5) как избежать dad lock
+6) фибоначи на транзакт sql
+
+WITH Hierachy(level, fp, fn) AS (
+     SELECT 0 AS level, 1 as fp, 1 as fn
+     UNION ALL
+     SELECT h.level + 1 AS level, h.fn fp, h.fn + h.fp fn
+     FROM Hierachy h where h.level < 20) SELECT level, fn
+                      FROM Hierachy
+
+   но на собеседовании, на бамажке без всего я бы этого не написал…
+   да, и эта муйня ограничена вложенностью в 100 на уровне мелкосовтовской базы данных
