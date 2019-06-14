@@ -141,7 +141,6 @@ public interface NavigableSet<E> extends java.util.SortedSet<E> {
     java.util.SortedSet<E> headSet(E toElement);
     java.util.SortedSet<E> tailSet(E fromElement);
 }   //TreeSet
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public interface Map<K,V> {
     // Query Operations
     int size();
@@ -210,7 +209,6 @@ public interface NavigableMap<K,V> extends java.util.SortedMap<K,V> {
     java.util.SortedMap<K,V> headMap(K toKey);
     java.util.SortedMap<K,V> tailMap(K fromKey);
 } //TreeMap
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class Collections {
 // sort, binarySearch, reverse, shuffle, swap, fill, copy, min, max, rotate, replaceAll, indexOfSubList,
 // unmodifiable... Collection, Set, SortedSet, NavigableSet, List, RandomAccessList, Map, SortedMap, NavigableMap
@@ -222,14 +220,10 @@ public class Collections {
 // Singleton collections
 // singleton...Iterator, Spliterator, List, Map
 // Miscellaneous
-//
 }
 public class Arrays {
     public static <T> java.util.List<T> asList(T... a) {
         return new Arrays.ArrayList<>(a);
     }
 }
-
-public class ReferenceQueue<T> {
-    //... для (Soft, Weak, Phantom)Reference и WeakHashMap
-}
+public class ReferenceQueue<T> { /*... для (Soft, Weak, Phantom)Reference и WeakHashMap */ }
