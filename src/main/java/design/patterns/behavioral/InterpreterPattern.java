@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  *
  */
-public class Interpreter {
+public class InterpreterPattern {
 
     /// <summary>
     /// The 'Context' class
@@ -41,7 +41,7 @@ public class Interpreter {
 
     /// <summary>
     /// MainApp startup class for Structural
-    /// Interpreter Design Pattern.
+    /// InterpreterPattern Design Pattern.
     /// </summary>
     static class MainApp
     {
