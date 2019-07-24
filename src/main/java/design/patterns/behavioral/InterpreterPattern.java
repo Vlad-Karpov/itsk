@@ -14,7 +14,7 @@ public class InterpreterPattern {
     }
 
     /// <summary>
-    /// The 'AbstractExpression' abstract class
+    /// The 'AbstractExpression' abstractfactory class
     /// </summary>
     interface AbstractExpression {
         void Interpret(Context context);
@@ -55,7 +55,7 @@ public class InterpreterPattern {
             // Usually a tree
             ArrayList<AbstractExpression> list = new ArrayList<>();
 
-            // Populate 'abstract syntax tree'
+            // Populate 'abstractfactory syntax tree'
             list.add(new TerminalExpression());
             list.add(new NonterminalExpression());
             list.add(new TerminalExpression());
