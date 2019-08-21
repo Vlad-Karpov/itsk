@@ -13,7 +13,7 @@ public class PingPongTest {
         PingPong pingPongPong = new PingPong("pong, ");
         pingPongPing.start();
         pingPongPong.start();
-        Thread.sleep(3L * 60L * 1000L);
+        //Thread.sleep(3L * 60L * 1000L);
     }
 
     @Test
@@ -22,7 +22,7 @@ public class PingPongTest {
         PingPong1 pingPongPong = new PingPong1("pong, ");
         pingPongPing.start();
         pingPongPong.start();
-        Thread.sleep(2L * 1000L);
+        //Thread.sleep(2L * 1000L);
     }
 
 }
