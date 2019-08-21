@@ -17,15 +17,13 @@ public class PingPong extends Thread {
             synchronized (PingPong.class) {
                 System.out.print(pingPongStr);
                 PingPong.class.notify();
-            }
-            synchronized (PingPong.class) {
+                yield();
                 try {
                     PingPong.class.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            yield();
         }
     }
 
