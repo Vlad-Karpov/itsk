@@ -27,6 +27,8 @@ public class genericlearn {
         numberArray[2] = 1.2f;
         numberArray[3] = 0255;
         numberArray[3] = 0x2557;
+//        String qq;
+//        qq.substring(1, 2); //Compile error
     }
 
     @Test
@@ -131,7 +133,7 @@ public class genericlearn {
     private void revers(List<?> src) {
         int size = src.size();
         int lm = size >> 1;
-        for(int i = 0; i < lm; i++) {
+        for (int i = 0; i < lm; i++) {
             int index = size - 1 - i;
             /*
             Object item = src.get(i);
@@ -165,5 +167,28 @@ Type Inference
     List<Integer> list = new ArrayList<>();
 */
 
+
+    /**
+     * 0 3 4
+     */
+    @Test
+    public void qqqExseption() {
+        int i = 1, j = 1;
+        try {
+            i++;
+            j--;
+            if (i / j > 1)
+                i++;
+        } catch (ArithmeticException e) {
+            System.out.println(0);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println(1);
+        } catch (Exception e) {
+            System.out.println(2);
+        } finally {
+            System.out.println(3);
+        }
+        System.out.println(4);
+    }
 
 }
