@@ -36,7 +36,7 @@ public class Tst010 {
     public void trst01() {
         int i = -1;
         i = i >> 1;
-        System.out.println(i);
+        System.out.println(i);  // print -1
     }
 
 }
