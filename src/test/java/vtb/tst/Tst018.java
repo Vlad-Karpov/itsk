@@ -5,7 +5,7 @@ import org.junit.Test;
 /**
  * Какие вызовы метода будут скомпилированны без ошибок?
  *
- *
+ *              Class<Integer> c2 = Class.forName("java.lang.Integer");
  *      *       Class<Integer> c2 = Integer.class;
  *      *       Class<Integer> c3 = (Class<Integer>) new Integer(0).getClass();
  *      *       Class<Integer> c4 = int.class;
@@ -14,8 +14,8 @@ import org.junit.Test;
 public class Tst018 {
 
     @Test
-    public void tst1() {
-        Class<Integer> c2 = Integer.class;
+    public void tst1() throws ClassNotFoundException {
+        Class<Integer> c2 = (Class<Integer>) Class.forName("java.lang.Integer");    //без (Class<Integer>) compile time error
         System.out.println(c2);
     }
     @Test
