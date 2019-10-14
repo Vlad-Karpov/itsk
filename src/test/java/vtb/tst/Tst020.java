@@ -39,6 +39,7 @@ public class Tst020 {
         SomeGeneric<String> someGeneric2 = new SomeGeneric<>("");
         SomeGeneric someGeneric3 = new SomeGeneric("");
         SomeGeneric<List<? super Number>> someGeneric4 = new SomeGeneric<>(new ArrayList<Number>());
+        SomeGeneric<Object> someGeneric5 = new SomeGeneric<>(new ArrayList<Number>());
     }
 
 }
