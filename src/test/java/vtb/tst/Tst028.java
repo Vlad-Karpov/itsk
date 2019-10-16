@@ -1,0 +1,36 @@
+package vtb.tst;
+
+import org.junit.Test;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+
+/**
+ * Что сделает программа
+ *
+ *   <ul>
+ *    <li>* 100 байтов из файла fname в переменную bytes</li>
+ *    <li>все байты из файла fname в переменную bytes</li>
+ *    <li>50 байт в переменную moreBytes после чтения в переменную bytes</li>
+ *    <li>* 20 байт в переменную moreBytes после чтения в переменную bytes</li>
+ *   </ul>
+ *
+ */
+public class Tst028 {
+
+    @Test
+    public void tst01() {
+        byte b;
+        byte bytes[] = new byte[100];
+        byte moreBytes[] = new byte[50];
+        try {
+            FileInputStream fis = new FileInputStream("C:\\Users\\User\\IdeaProjects\\itsk\\src\\test\\java\\vtb\\tst\\Tst028.java");
+            b = (byte)fis.read();
+            fis.read(bytes);
+            fis.read(moreBytes, 0, 20);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
