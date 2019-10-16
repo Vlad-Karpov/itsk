@@ -4,13 +4,19 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Какая реализация является предпочтительной для хранения большого количества объектов в списке, если при этом часто
  * производиться выборка по индексу
  *
- *          у
- *
+ * <ul>
+ * <li>          LinkedList</li>
+ * <li>          </li>
+ * <li>          </li>
+ * <li>          </li>
+ * </ul>
  */
 public class Tst024 {
 
