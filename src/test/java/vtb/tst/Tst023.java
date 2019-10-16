@@ -2,7 +2,9 @@ package vtb.tst;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Какова эффективность поиска объекта в HashMap по ключю, при равномерном распределении хэш функции
@@ -11,6 +13,28 @@ import java.util.Date;
  * <li>          O(n)</li>
  * <li>          O(log(n))</li>
  * <li>     *    O(1)</li>
+ * </ul>
+ * <p>
+ * <p>
+ * <p>
+ * <p>
+ * <p>
+ *
+ *  Какие вызовы метода будут скомпилированны без ошибок
+ *
+ * <code>
+ *     private void copy(List<? extends Animal> source, List<? super Animal> target);
+ *     public class Animal {};
+ *     public class Dog extends Animal {};
+ *     public class Cat extends Animal {};
+ * </code>
+ *
+ * <ul>
+ * <li>        copy(new ArrayList<Dog>(), new ArrayList<Dog>());  </li>
+ * <li>        copy(new ArrayList<Dog>(), new ArrayList<Cat>());  </li>
+ * <li>    *   copy(new ArrayList<Dog>(), new ArrayList<Animal>());  </li>
+ * <li>        copy(new ArrayList<Animal>(), new ArrayList<Dog>());  </li>
+ * <li>    *   copy(new ArrayList<Animal>(), new ArrayList<Animal>());  </li>
  * </ul>
  */
 public class Tst023 {
@@ -170,6 +194,19 @@ public class Tst023 {
         System.out.println(tst.data);
     }
 
+    class Animal {}
+    public class Dog extends Animal {}
+    public class Cat extends Animal {}
+    private void copy(List<? extends Animal> source, List<? super Animal> target) {
+    }
 
+    @Test
+    public void tst04() {
+        //copy(new ArrayList<Dog>(), new ArrayList<Dog>());         //compile time error
+        //copy(new ArrayList<Dog>(), new ArrayList<Cat>());         //compile time error
+        copy(new ArrayList<Dog>(), new ArrayList<Animal>());
+        //copy(new ArrayList<Animal>(), new ArrayList<Dog>());      //compile time error
+        copy(new ArrayList<Animal>(), new ArrayList<Animal>());
+    }
 
 }
