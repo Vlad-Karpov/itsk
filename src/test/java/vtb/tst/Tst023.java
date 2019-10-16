@@ -22,12 +22,12 @@ import java.util.List;
  *
  *  Какие вызовы метода будут скомпилированны без ошибок
  *
- * <code>
- *     private void copy(List<? extends Animal> source, List<? super Animal> target);
+ * <pre><code>
  *     public class Animal {};
  *     public class Dog extends Animal {};
  *     public class Cat extends Animal {};
- * </code>
+ *     private void copy(List<? extends Animal> source, List<? super Animal> target);
+ * </code></pre>
  *
  * <ul>
  * <li>        copy(new ArrayList<Dog>(), new ArrayList<Dog>());  </li>
