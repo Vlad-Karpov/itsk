@@ -110,30 +110,39 @@ public class InsertionTest extends SortGeneralTest {
             collectionsSortList.add(rnd);
         }
 
-        Calendar cBegin = Calendar.getInstance();
+        Calendar cBegin;
+        Calendar cEnd;
+
+/*
+        cBegin = Calendar.getInstance();
         Insertion.insertionSort(list, sc);
-        Calendar cEnd = Calendar.getInstance();
+        cEnd = Calendar.getInstance();
         System.out.println("insertionSort time = " + (cEnd.getTimeInMillis() - cBegin.getTimeInMillis()));
         checkList(list);
         System.out.println(sc);
+*/
 
+/*
         cBegin = Calendar.getInstance();
         Insertion.binaryInsertionSort(binaryInsertionList, sc);
         cEnd = Calendar.getInstance();
         System.out.println("binaryInsertionSort time = " + (cEnd.getTimeInMillis() - cBegin.getTimeInMillis()));
         checkList(binaryInsertionList);
         System.out.println(sc);
+*/
 
         //Integer[] shellGaps = {256000, 128000, 32000, 16000, 8000, 3750, 1750, 701, 301, 132, 57, 23, 10, 4, 1};
 
         Integer[] shellGaps = {122710, 52448, 22417, 9581, 4095, 1750, 701, 301, 132, 57, 23, 10, 4, 1};
 
+/*
         cBegin = Calendar.getInstance();
         Insertion.binaryInsertionShellSort(binaryInsertionShellList, shellGaps, sc);
         cEnd = Calendar.getInstance();
         System.out.println("binaryInsertionShellSort time = " + (cEnd.getTimeInMillis() - cBegin.getTimeInMillis()));
         checkList(binaryInsertionShellList);
         System.out.println(sc);
+*/
 
         cBegin = Calendar.getInstance();
         Insertion.shellSort(shellList, shellGaps, sc);
@@ -142,12 +151,15 @@ public class InsertionTest extends SortGeneralTest {
         checkList(shellList);
         System.out.println(sc);
 
+/*
         cBegin = Calendar.getInstance();
         Insertion.shellSort(shellList1, sc);
         cEnd = Calendar.getInstance();
         System.out.println("shellSort1 time = " + (cEnd.getTimeInMillis() - cBegin.getTimeInMillis()));
         checkList(shellList1);
         System.out.println(sc);
+*/
+
 
         cBegin = Calendar.getInstance();
         Collections.sort(collectionsSortList);

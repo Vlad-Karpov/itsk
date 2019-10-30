@@ -1,6 +1,7 @@
 package vtb.tst;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -231,6 +232,12 @@ public class Tst005 {
                 return "B.method()";
             }
         }
+        static class C extends B {
+            @Override
+            public String method() {
+                return "C.method()";
+            }
+        }
         public static void main(String[] args) {
             List<Number> box = new ArrayList<Number>();
             box.add(10);   // OK
@@ -253,12 +260,28 @@ public class Tst005 {
             System.out.println(pInt.get(0).method());
             pInt.add(new B());
             System.out.println(pInt.get(1).method());
+            method1(pInt);
+            //method2(pInt);
+            //method3(pInt);
+            method4(pInt);
+            //method5(pInt);
+            method6(pInt);
+            method7(pInt);
+            method8(pInt);
 
             List<A> pA = new ArrayList<>();
             pA.add(new A());
             System.out.println(pA.get(0).method());
             pA.add(new B());
             System.out.println(pA.get(1).method());
+            //method1(pA);
+            method2(pA);
+            //method3(pA);
+            method4(pA);
+            method5(pA);
+            method6(pA);
+            method7(pA);
+            //method8(pA);
 
             List<B> pB = new ArrayList<>();
             //pB.add(new A());
@@ -267,16 +290,54 @@ public class Tst005 {
             System.out.println(((A)pB.get(0)).method());
             pB.add(new B());
             System.out.println(pB.get(1).method());
+            //method1(pB);
+            //method2(pB);
+            method3(pB);
+            method4(pB);
+            method5(pB);
+            method6(pB);
+            //method7(pB);
+            //method8(pB);
 
             new Integer("10");
 
             List<? super B> pSuperB = new ArrayList<>();
-//            pSuperB.add(new A());
-//            System.out.println(( pSuperB.get(0)).method());
+            //pSuperB.add(new A()); //незя...!
             addAinBasObject(pSuperB, new A());
-            System.out.println(((PInterface) pSuperB.get(0)).method());
             pSuperB.add(new B());
-            System.out.println(((PInterface) pSuperB.get(1)).method());
+            pSuperB.add(new C());
+            for (Object o : pSuperB) {
+                PInterface next = (PInterface) o;
+                System.out.println(next.method());
+            }
+            System.out.println(pSuperB.get(0).getClass().getName());
+            //method1(pSuperB);
+            //method2(pSuperB);
+            //method3(pSuperB);
+            //method4(pSuperB);
+            //method5(pSuperB);
+            method6(pSuperB);
+            //method7(pSuperB);
+            //method8(pSuperB);
+
+            List<? extends B> pExtendsB = new ArrayList<>();
+            //pExtendsB.add(new A());  //незя...!
+            addAinBasObject(pExtendsB, new A());
+            //pExtendsB.add(new B()); //незя...!
+            //pExtendsB.add(new C()); //незя...!
+            //Вааще ничего добавлять незя...! кроме как через Row
+            //и это понятно, мы добавим new B(), а лист будет ArrayList<C>, незя....!
+            printAll(pExtendsB);
+            System.out.println(((PInterface)pExtendsB.get(0)).getClass().getName());    //без (PInterface) run time exception - ClassCastException
+            //method1(pExtendsB);
+            //method2(pExtendsB);
+            //method3(pExtendsB);
+            method4(pExtendsB);
+            method5(pExtendsB);
+            //method6(pExtendsB);
+            //method7(pExtendsB);
+            //method8(pExtendsB);
+
         }
         static <T> void addAinB(List<T> lst, T arg) {
             lst.add(arg);
@@ -285,28 +346,35 @@ public class Tst005 {
             lst.add(arg);
         }
         static void method1(List<PInterface> arg) {
-            arg.forEach(el -> System.out.println(el.method()));
+            printAll(arg);
         }
         static void method2(List<A> arg) {
-            arg.forEach(el -> System.out.println(el.method()));
+            printAll(arg);
         }
         static void method3(List<B> arg) {
-            arg.forEach(el -> System.out.println(el.method()));
+            printAll(arg);
         }
         static void method4(List<? extends PInterface> arg) {
-            arg.forEach(el -> System.out.println(el.method()));
+            printAll(arg);
         }
         static void method5(List<? extends A> arg) {
-            arg.forEach(el -> System.out.println(el.method()));
+            printAll(arg);
         }
         static void method6(List<? super B> arg) {
-            arg.forEach(el -> System.out.println(((PInterface)el).method()));
+            printAll(arg);
         }
         static void method7(List<? super A> arg) {
-            arg.forEach(el -> System.out.println(((PInterface)el).method()));
+            printAll(arg);
         }
         static void method8(List<? super PInterface> arg) {
-            arg.forEach(el -> System.out.println(((PInterface)el).method()));
+            printAll(arg);
+        }
+        static void printAll(List pList) {
+            for (Object o : pList) {
+                PInterface next = (PInterface) o;
+                System.out.println(next.method());
+            }
+
         }
     }
 
