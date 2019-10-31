@@ -59,7 +59,8 @@ public class Tst005 {
     static class QQQQ0003 {
         static public class Go {
             public static void main(String[] args) {
-                System.out.print(C.x);
+                System.out.println(C.x);
+                System.out.println("В static секцию класса C вообще не попало...");
             }
         }
 
