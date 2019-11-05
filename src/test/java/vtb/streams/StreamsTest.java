@@ -183,7 +183,7 @@ public class StreamsTest {
      */
     @Test
     public void intermediate_peek() {
-        List<String> strings = Stream.of("Badgers", "finals", "four")
+        List<String> strings = Stream.of("Badgers", "finals", "four", "one")
                 .filter(s -> s.length() >= 4).peek(s -> System.out.println(s))
                 .map(s -> s.toUpperCase()).collect(Collectors.toList());
         assertThat(strings, contains("BADGERS", "FINALS", "FOUR"));
