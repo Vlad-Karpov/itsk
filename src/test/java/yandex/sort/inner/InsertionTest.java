@@ -41,10 +41,10 @@ public class InsertionTest extends SortGeneralTest {
 
     @Test
     public void test123() throws IOException {
-        ByteBuffer buffer = ByteBuffer.allocate((Long.SIZE / Byte.SIZE) * 200000 );
+        ByteBuffer buffer = ByteBuffer.allocate((Long.SIZE / Byte.SIZE) * 1200000 );
         Long rnd;
-        for (int i = 0; i < 200000; i++) {
-            rnd = Math.round(Math.random() * 10000L);
+        for (int i = 0; i < 1200000; i++) {
+            rnd = Math.round(Math.random() * 100000L);
             buffer.putLong(rnd);
         }
         File filePath = new File("test/tmp");
@@ -64,11 +64,11 @@ public class InsertionTest extends SortGeneralTest {
         File filePath = new File("test/tmp");
         File file = new File(filePath, "rnd.bin");
         FileInputStream fos = new FileInputStream(file);
-        ByteBuffer buffer = ByteBuffer.allocate((Long.SIZE / Byte.SIZE) * 200000 );
+        ByteBuffer buffer = ByteBuffer.allocate((Long.SIZE / Byte.SIZE) * 1200000 );
         fos.read(buffer.array());
         fos.close();
         List<Long> result = new ArrayList<Long>();
-        for (int i = 0; i < 200000; i++) {
+        for (int i = 0; i < 1200000; i++) {
             result.add(buffer.getLong());
         }
         return result;
@@ -99,15 +99,17 @@ public class InsertionTest extends SortGeneralTest {
         List<Long> shellList = new ArrayList<Long>();
         List<Long> shellList1 = new ArrayList<Long>();
         List<Long> collectionsSortList = new ArrayList<Long>();
+        List<Long> quickSortList = new ArrayList<Long>();
 
         Long rnd;
-        for (int i = 0; i < 200000; i++) {
+        for (int i = 0; i < 1200000; i++) {
             rnd = list.get(i);
             binaryInsertionList.add(rnd);
             binaryInsertionShellList.add(rnd);
             shellList.add(rnd);
             shellList1.add(rnd);
             collectionsSortList.add(rnd);
+            quickSortList.add(rnd);
         }
 
         Calendar cBegin;
@@ -160,6 +162,12 @@ public class InsertionTest extends SortGeneralTest {
         System.out.println(sc);
 */
 
+        cBegin = Calendar.getInstance();
+        Quick.quickSort(quickSortList, sc);
+        cEnd = Calendar.getInstance();
+        System.out.println("quickSort time = " + (cEnd.getTimeInMillis() - cBegin.getTimeInMillis()));
+        checkList(quickSortList);
+        System.out.println(sc);
 
         cBegin = Calendar.getInstance();
         Collections.sort(collectionsSortList);
