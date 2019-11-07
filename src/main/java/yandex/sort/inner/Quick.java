@@ -18,7 +18,7 @@ public class Quick {
         int e = e1;
         if (b < e) {
             Comparable midlElement = list.get(b + ((e - b) >> 1));
-            while (b < e) {
+            while (true) {
                 while (b < list.size() && ((c1 = ((Comparable) list.get(b)).compareTo(midlElement)) < 0)) {
                     b++;
                     sortContextObject.incCmpCount();
