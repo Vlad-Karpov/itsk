@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.stream.Stream;
 
 /**
  * Что сделает программа
@@ -31,6 +32,13 @@ public class Tst028 {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void tst02() {
+        Stream<Integer> numStream = Stream.of(10, 20, 30);
+        numStream.map(n -> n + 10).peek(s -> System.out.print(s));
+        //numStream.forEach(s -> System.out.println(s));
     }
 
 }

@@ -3,8 +3,11 @@ package yandex.sort.inner;
 import yandex.sort.SortContextInterface;
 
 import java.util.List;
+import java.util.Random;
 
 public class Quick {
+
+    //public static final Random RND = new Random();
 
     public static <T extends Comparable<? super T>> void quickSort(List<T> list, SortContextInterface sortContextObject) {
         if (sortContextObject != null ) sortContextObject.clear();
@@ -18,6 +21,7 @@ public class Quick {
         int e = e1;
         if (b < e) {
             Comparable midlElement = list.get(b + ((e - b) >> 1));
+            //Comparable midlElement = list.get(b + RND.nextInt(e - b + 1));
             while (true) {
                 while (b < list.size() && ((c1 = ((Comparable) list.get(b)).compareTo(midlElement)) < 0)) {
                     b++;

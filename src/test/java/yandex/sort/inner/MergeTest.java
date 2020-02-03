@@ -27,7 +27,7 @@ public class MergeTest extends SortGeneralTest {
 
         list.clear();
         Long rnd;
-        for (int i = 0; i < 10000000; i++) {
+        for (int i = 0; i < 24000000/*10000000*/; i++) {
             rnd = Math.round(Math.random() * 100000L);
             list.add(rnd);
         }
@@ -39,6 +39,15 @@ public class MergeTest extends SortGeneralTest {
         System.out.println(sc);
 
         checkList(list);
+
+        cBegin = Calendar.getInstance();
+        list = Merge.mergeSort(list, sc);
+        cEnd = Calendar.getInstance();
+        System.out.println("time = " + (cEnd.getTimeInMillis() - cBegin.getTimeInMillis()));
+        System.out.println(sc);
+
+        checkList(list);
+
     }
 
     @Test
