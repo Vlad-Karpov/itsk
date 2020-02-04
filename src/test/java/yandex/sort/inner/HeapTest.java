@@ -12,14 +12,15 @@ public class HeapTest extends SortGeneralTest {
     public void test1() {
         SortContext sc = new SortContext();
         List<Long> list = new ArrayList<Long>();
-        list.add(7L);
-        list.add(3L);
-        list.add(6L);
         list.add(1L);
         list.add(2L);
+        list.add(3L);
         list.add(4L);
         list.add(5L);
+        list.add(6L);
+        list.add(7L);
         Heap.heapSort(list, sc);
+        Heap.heapPrint(list, System.out::println);
     }
 
 }
