@@ -94,7 +94,6 @@ public class CompareSorterTest extends SortGeneralTest {
         checkList(listQuick);
         System.out.println(sc);
 
-
     }
 
 }
