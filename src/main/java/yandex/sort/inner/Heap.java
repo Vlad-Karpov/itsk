@@ -101,7 +101,7 @@ public class Heap {
                         chV = lV;
                     }
                 }
-                if (cmp < 0) {
+                if (cmp <= 0) {
                     sortContextObject.incCmpCount();
                     if (cV.compareTo(rV) < 0) {
                         ch = r;

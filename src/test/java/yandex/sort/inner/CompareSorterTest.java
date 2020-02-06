@@ -23,6 +23,7 @@ public class CompareSorterTest extends SortGeneralTest {
         List<Long> collectionSortList = new ArrayList<Long>();
         List<Long> listMerge = new ArrayList<Long>();
         List<Long> listQuick = new ArrayList<Long>();
+        List<Long> listHeap = new ArrayList<Long>();
 
         Long rnd;
         for (int i = 0; i < 24000000; i++) {
@@ -34,6 +35,7 @@ public class CompareSorterTest extends SortGeneralTest {
             collectionSortList.add(rnd);
             listMerge.add(rnd);
             listQuick.add(rnd);
+            listHeap.add(rnd);
         }
 
         Calendar cBegin;
@@ -93,6 +95,14 @@ public class CompareSorterTest extends SortGeneralTest {
         System.out.println("quickSort time = " + (cEnd.getTimeInMillis() - cBegin.getTimeInMillis()));
         checkList(listQuick);
         System.out.println(sc);
+
+        cBegin = Calendar.getInstance();
+        Heap.heapSort(listHeap, sc);
+        cEnd = Calendar.getInstance();
+        System.out.println("heapSort time = " + (cEnd.getTimeInMillis() - cBegin.getTimeInMillis()));
+        checkList(listHeap);
+        System.out.println(sc);
+
 
     }
 
