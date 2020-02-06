@@ -83,7 +83,6 @@ public class Heap {
                 T cV = list.get(c);
                 int ch = -1;
                 T chV = null;
-                sortContextObject.incCmpCount();
                 int cmp;
                 if (lV == null) {
                     cmp = -1;
@@ -91,6 +90,7 @@ public class Heap {
                     if (rV == null) {
                         cmp = 1;
                     } else {
+                        sortContextObject.incCmpCount();
                         cmp = lV.compareTo(rV);
                     }
                 }
