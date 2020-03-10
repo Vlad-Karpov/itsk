@@ -13,9 +13,10 @@ public class CarFix {
         z = 2;
     }
 
-    public class A {
+    static public class A {
         int x = 1;
         int y;
+        static int z = 1;
 
         {
             y = 1;
@@ -33,18 +34,26 @@ public class CarFix {
             return y;
         }
 
+        int getZ() {
+            return z;
+        }
+
         @Override
         public String toString() {
-            return this.getClass().getSimpleName() + getX() + getY();
+            return this.getClass().getSimpleName() + getX() + getY() + getZ();
         }
     }
 
-    public class B extends A {
+    static public class B extends A {
         int x = 2;
         int y;
+        static int z = 1;
 
         {
             y = 2;
+        }
+        static {
+            z = 2;
         }
 
         public B() {
@@ -63,16 +72,21 @@ public class CarFix {
         int getY() {
             return y;
         }
+
+        int getZ() {
+            return z;
+        }
+
     }
 
     @Test
     public void tst1() {
-        A a3 = new A();
-        System.out.println("");
+        //A a3 = new A();
+        //System.out.println("");
         A a1 = new B();
         System.out.println("");
-        A a2 = new B(3);
-        System.out.println("");
+        //A a2 = new B(3);
+        //System.out.println("");
     }
 
 
