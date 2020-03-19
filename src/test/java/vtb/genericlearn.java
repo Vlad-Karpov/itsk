@@ -191,4 +191,10 @@ Type Inference
         System.out.println(4);
     }
 
+    @Test
+    public void qqqTest() {
+
+        System.out.println(System.identityHashCode(this));
+    }
+
 }
