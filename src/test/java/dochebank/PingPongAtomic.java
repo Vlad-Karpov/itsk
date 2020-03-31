@@ -1,25 +1,27 @@
 package dochebank;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Predicate;
 
 public class PingPongAtomic extends Thread {
 
-    private String pingPongStr;
-    private AtomicBoolean check;
-    boolean qq;
+    final private String pingPongStr;
+    final private AtomicBoolean check;
+    final private Predicate<AtomicBoolean> p;
 
-    public PingPongAtomic(String thePingPong, AtomicBoolean check, boolean qq) {
+    public PingPongAtomic(String thePingPong, AtomicBoolean check, Predicate<AtomicBoolean> p) {
         pingPongStr = thePingPong;
         this.check = check;
-        this.qq = qq;
+        this.p = p;
     }
 
     @Override
     public void run() {
         while (!isInterrupted()) {
-            if (check.get() == qq) {
-                System.out.print(pingPongStr);
-                while (check.compareAndSet(qq, !qq));
+            synchronized (check) {
+                if (p.test(check)) {
+                    System.out.print(pingPongStr);
+                }
             }
         }
     }

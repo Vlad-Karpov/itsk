@@ -6,6 +6,10 @@ import java.util.concurrent.Exchanger;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Predicate;
 
 /**
  * Вывод ping pong, и не как иначе....
@@ -32,12 +36,26 @@ public class PingPongTest {
 
     @Test
     public void pingPongTest2() throws InterruptedException {
-        AtomicBoolean check = new AtomicBoolean();
-        PingPongAtomic p1 = new PingPongAtomic("ping ", check, true);
-        PingPongAtomic p2 = new PingPongAtomic("pong, ", check, false);
+        final AtomicBoolean check = new AtomicBoolean();
+        PingPongAtomic p1 = new PingPongAtomic("ping ", check, p -> p.compareAndSet(false, true));
+        PingPongAtomic p2 = new PingPongAtomic("pong, ", check, p -> p.compareAndSet(true, false));
         p1.start();
         p2.start();
         Thread.sleep(10L);
+    }
+
+    @Test
+    public void atomicTest() throws InterruptedException {
+        AtomicBoolean check = new AtomicBoolean(false);
+        if (check.compareAndSet(true, true)) {
+            System.out.println("1");
+        }
+        if (check.compareAndSet(false, false)) {
+            System.out.println("2");
+        }
+        if (check.compareAndSet(false, true)) {
+            System.out.println("3");
+        }
     }
 
     @Test
@@ -67,6 +85,17 @@ public class PingPongTest {
         Semaphore check = new Semaphore(1);
         PingPongSemaphore p1 = new PingPongSemaphore("ping ", check);
         PingPongSemaphore p2 = new PingPongSemaphore("pong, ", check);
+        p1.start();
+        p2.start();
+        Thread.sleep(10L);
+    }
+
+    @Test
+    public void pingPongLock() throws InterruptedException {
+        Lock lock = new ReentrantLock();
+        Condition cnd =lock.newCondition();
+        PingPongLock p1 = new PingPongLock("ping ", lock, cnd);
+        PingPongLock p2 = new PingPongLock("pong, ", lock, cnd);
         p1.start();
         p2.start();
         Thread.sleep(10L);

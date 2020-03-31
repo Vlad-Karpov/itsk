@@ -33,6 +33,7 @@ public class genericlearn {
 
     @Test
     public void jeneric_is_invarint() {
+        //Number[] numberArray = new Integer[10];
         //List<Number> numberArray = new ArrayList<Integer>();  //compile error
     }
 
