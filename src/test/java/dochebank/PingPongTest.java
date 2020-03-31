@@ -9,7 +9,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Predicate;
 
 /**
  * Вывод ping pong, и не как иначе....
@@ -93,7 +92,7 @@ public class PingPongTest {
     @Test
     public void pingPongLock() throws InterruptedException {
         Lock lock = new ReentrantLock();
-        Condition cnd =lock.newCondition();
+        Condition cnd = lock.newCondition();
         PingPongLock p1 = new PingPongLock("ping ", lock, cnd);
         PingPongLock p2 = new PingPongLock("pong, ", lock, cnd);
         p1.start();
