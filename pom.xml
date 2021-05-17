@@ -51,6 +51,13 @@
             <version>r05</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.encog/encog-core -->
+        <dependency>
+            <groupId>org.encog</groupId>
+            <artifactId>encog-core</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
     </dependencies>
 
 
