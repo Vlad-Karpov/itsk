@@ -2,8 +2,6 @@ package encog;
 
 import org.encog.ConsoleStatusReportable;
 import org.encog.Encog;
-import org.encog.engine.network.activation.ActivationBipolarSteepenedSigmoid;
-import org.encog.engine.network.activation.ActivationSigmoid;
 import org.encog.engine.network.activation.ActivationTANH;
 import org.encog.ml.MLRegression;
 import org.encog.ml.data.MLData;
@@ -171,7 +169,7 @@ public class EncogTests {
             result.append ( " ) " ) ;
             System.out.println (result) ;
             line = ds.readLine();
-            l.add(new Double[]{dBegin, output.getData(0), myFn(dBegin)});
+            l.add(new Double[]{dBegin, output.getData(0), myFn(dBegin, 1, 1)});
             dBegin = dBegin + dStep;
         }
         Encog.getInstance ( ).shutdown( ) ;
@@ -212,7 +210,7 @@ public class EncogTests {
             dBegin+=dStep;
             if (dBegin <= 2.0 * Math.PI) {
                 INPUT[cnt][0] = dBegin - dStep;
-                IDEAL[cnt][0] = myFn(INPUT[cnt][0]);
+                IDEAL[cnt][0] = myFn(INPUT[cnt][0], 1, 1);
                 cnt++;
             } else {
                 break;
@@ -281,8 +279,8 @@ public class EncogTests {
                 pair = new BasicMLDataPair(new BasicMLData(new double[]{dBegin - dStep}));
                 output = network.compute(pair.getInput());
                 System.out.println(pair.getInput().getData(0)
-                        + ", actual=" + output.getData(0) + ",ideal=" + String.format("%1.14f", myFn(dBegin - dStep)));
-                l.add(new Double[]{dBegin - dStep, output.getData(0), myFn(dBegin - dStep)});
+                        + ", actual=" + output.getData(0) + ",ideal=" + String.format("%1.14f", myFn(dBegin - dStep, 1, 1)));
+                l.add(new Double[]{dBegin - dStep, output.getData(0), myFn(dBegin - dStep, 1, 1)});
                 cnt++;
             } else {
                 break;
@@ -297,10 +295,136 @@ public class EncogTests {
 
     }
 
-    public double myFn(double x) {
-        //return Math.sin(x);
-        return (Math.sin(x) + Math.sin(2*x))/2;
+    @Test
+    public void test4() throws InterruptedException {
+
+        // create a neural network, without using a factory
+        BasicNetwork network = new BasicNetwork();
+        network.addLayer(new BasicLayer(null,true,2));
+        network.addLayer(new BasicLayer(new ActivationTANH(),true,10));
+        network.addLayer(new BasicLayer(new ActivationTANH(),true,15));
+        network.addLayer(new BasicLayer(new ActivationTANH(),true,20));
+        network.addLayer(new BasicLayer(new ActivationTANH(),true,15));
+        network.addLayer(new BasicLayer(new ActivationTANH(),true,10));
+        network.addLayer(new BasicLayer(new ActivationTANH(),false,1));
+        network.getStructure().finalizeStructure();
+        network.reset();
+
+        double dBegin;
+        double dEnd;
+        double dStep;
+        double[][] INPUT;
+        double[][] IDEAL;
+        int niter = 0;
+        int cnt;
+        double k;
+
+        do {
+            dBegin = (-2.0) * Math.PI;
+            dStep = 0.01;
+            dEnd = 4.0 * Math.PI;
+            if (niter == 2) {
+                dEnd = 2.0 * Math.PI;
+            }
+
+            cnt = 0;
+            while (true) {
+                dBegin += dStep;
+                if (dBegin <= dEnd) {
+                    cnt++;
+                } else {
+                    break;
+                }
+            }
+
+            INPUT = new double[cnt][2];
+            IDEAL = new double[cnt][1];
+
+            dBegin = (-2.0) * Math.PI;
+            k=1;
+            if (niter == 1) {
+                k=0.85;
+            }
+            if (niter == 2) {
+                k=0.7;
+            }
+
+            cnt = 0;
+            while (true) {
+
+                dBegin += dStep;
+                if (dBegin <= dEnd) {
+                    INPUT[cnt][0] = dBegin - dStep;
+                    INPUT[cnt][1] = niter;
+                    IDEAL[cnt][0] = myFn(INPUT[cnt][0], k, k);
+                    cnt++;
+                } else {
+                    break;
+                }
+            }
+
+            MLDataSet trainingSet = new BasicMLDataSet(INPUT, IDEAL);
+
+            // train the neural network
+            final ResilientPropagation train = new ResilientPropagation(network, trainingSet);
+            int epoch = 1;
+            double lastError;
+            do {
+                lastError = train.getError();
+                train.iteration();
+                System.out.println("Epoch #" + epoch + " Error:" + train.getError());
+                epoch++;
+            } while ((train.getError() > 0.0001) && (Math.abs(lastError - train.getError()) > 0.000000001));
+            train.finishTraining();
+
+            // test the neural network
+            System.out.println("Neural Network Results:");
+            for(MLDataPair pair: trainingSet ) {
+                final MLData output = network.compute(pair.getInput());
+                System.out.println(pair.getInput().getData(0)
+                        + ", actual=" + output.getData(0) + ",ideal=" + pair.getIdeal().getData(0));
+            }
+
+            niter++;
+        } while (niter < 3);
+
+
+        MLDataPair pair;
+        MLData output;
+
+        List<Double[]> l = new ArrayList<>();
+        dBegin = (-2.0) * Math.PI;
+        dStep = 0.015;
+        cnt = 0;
+        while (true) {
+            dBegin+=dStep;
+            if (dBegin <= 4.0 * Math.PI) {
+                pair = new BasicMLDataPair(new BasicMLData(new double[]{dBegin - dStep, 2}));
+                output = network.compute(pair.getInput());
+                System.out.println(pair.getInput().getData(0)
+                        + ", actual=" + output.getData(0) + ",ideal=" + String.format("%1.14f", myFn(dBegin - dStep, 0.7, 0.7)));
+                l.add(new Double[]{dBegin - dStep, output.getData(0), myFn(dBegin - dStep, 0.7, 0.7)});
+                cnt++;
+            } else {
+                break;
+            }
+        }
+
+
+        Encog.getInstance().shutdown();
+
+        new ShapeTest(l);
+        Thread.sleep(1000 * 60);
+
     }
+
+
+    public double myFn(double x, double a, double f) {
+        //return a * Math.sin(x);
+        //return a * Math.sin( f * 2 * x );
+        return a * (Math.sin(f * x) + Math.sin(f * 2 * x))/2;
+    }
+
 
     VersatileDataSource ds = new VersatileDataSource() {
 
@@ -311,7 +435,7 @@ public class EncogTests {
         public String[] readLine() {
             String[] result = new String[2];
             result[0] = String.format("%14.14f", dBegin);
-            result[1] = String.format("%14.14f", myFn(dBegin));
+            result[1] = String.format("%14.14f", myFn(dBegin, 1, 1));
             dBegin+=dStep;
             if (dBegin <= 2.0 * Math.PI) {
                 return result;
