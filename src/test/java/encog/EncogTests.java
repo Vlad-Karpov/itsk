@@ -3,6 +3,8 @@ package encog;
 import org.encog.ConsoleStatusReportable;
 import org.encog.Encog;
 import org.encog.engine.network.activation.ActivationTANH;
+import org.encog.mathutil.error.ErrorCalculation;
+import org.encog.mathutil.error.ErrorCalculationMode;
 import org.encog.ml.MLRegression;
 import org.encog.ml.data.MLData;
 import org.encog.ml.data.MLDataPair;
@@ -21,6 +23,7 @@ import org.encog.ml.model.EncogModel;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
 import org.encog.neural.networks.training.propagation.resilient.ResilientPropagation;
+import org.encog.util.arrayutil.VectorWindow;
 import org.encog.util.csv.CSVFormat;
 import org.encog.util.csv.ReadCSV;
 import org.encog.util.simple.EncogUtility;
@@ -32,6 +35,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class EncogTests {
 
@@ -419,10 +423,15 @@ public class EncogTests {
     }
 
 
-    public double myFn(double x, double a, double f) {
-        //return a * Math.sin(x);
-        //return a * Math.sin( f * 2 * x );
-        return a * (Math.sin(f * x) + Math.sin(f * 2 * x))/2;
+    static Random rmd = new Random();
+
+
+    public static double myFn(double x, double a, double f) {
+        //return a * Math.sin(f * x);
+        //return Math.sin(x) + rmd.nextDouble() * 0.2 - rmd.nextDouble() * 0.2;
+        //return 0.59 * a * Math.sin( f * x ) + rmd.nextDouble() * 0.2 - rmd.nextDouble() * 0.2;
+        //return a * (Math.sin(f * x) + Math.sin(f * 2 * x))/2;
+        return 0.59 * (a * (Math.sin(f * x) + Math.sin(f * 2 * x))/2) + rmd.nextDouble() * 0.2 - rmd.nextDouble() * 0.2;
     }
 
 
@@ -460,5 +469,95 @@ public class EncogTests {
             throw new RuntimeException("Oops!");
         }
     };
+
+    @Test
+    public void test6() throws InterruptedException {
+
+        int bl = 6;
+        int sz = 200;
+
+        // create a neural network, without using a factory
+        BasicNetwork network = new BasicNetwork();
+        network.addLayer(new BasicLayer(null,true,sz));
+        network.addLayer(new BasicLayer(new ActivationTANH(),true,10));
+        network.addLayer(new BasicLayer(new ActivationTANH(),true,15));
+        network.addLayer(new BasicLayer(new ActivationTANH(),true,20));
+        network.addLayer(new BasicLayer(new ActivationTANH(),true,15));
+        network.addLayer(new BasicLayer(new ActivationTANH(),true,10));
+        network.addLayer(new BasicLayer(new ActivationTANH(),false,sz));
+        network.getStructure().finalizeStructure();
+        network.reset();
+
+        MLDataPair pair;
+        MLData output;
+
+        double dBegin;
+        double dStep;
+        double[][] INPUT;
+        double[][] INPUTX;
+        double[] OUTPUT = null;
+        double[][] IDEAL;
+        int niter = 0;
+        int cnt;
+        double k;
+
+        dBegin = (-2.0) * Math.PI;
+        dStep = 0.01;
+
+        List<Double[]> l = new ArrayList<>();
+
+
+        do {
+
+            INPUTX = new double[1][sz];
+            INPUT = new double[1][sz];
+            IDEAL = new double[1][sz];
+
+            cnt = 0;
+            while (cnt < sz) {
+                INPUTX[0][cnt] = dBegin + dStep * (sz * niter + cnt);
+                INPUT[0][cnt] = myFn(dBegin + dStep * (sz * niter + cnt), 1, 1);
+                IDEAL[0][cnt] = myFn(dBegin + dStep * (sz * (niter + 1) + cnt), 1, 1);
+                cnt++;
+            }
+
+            if (niter < bl - 2) {
+
+                MLDataSet trainingSet = new BasicMLDataSet(INPUT, IDEAL);
+
+                // train the neural network
+                ResilientPropagation train = new ResilientPropagation(network, trainingSet);
+                int epoch = 1;
+                double lastError;
+                do {
+                    lastError = train.getError();
+                    train.iteration();
+                    System.out.println("Epoch #" + epoch + " Error:" + train.getError());
+                    epoch++;
+                } while ((train.getError() > 0.0001) && (Math.abs(lastError - train.getError()) > 0.000000001));
+                train.finishTraining();
+
+            }
+
+            if (niter == 0) {
+                OUTPUT = INPUT[0];
+            }
+            for(int i = 0; i < sz; i++) {
+                l.add(new Double[]{INPUTX[0][i], OUTPUT[i], INPUT[0][i]});
+            };
+            pair = new BasicMLDataPair(new BasicMLData(INPUT[0]));
+            output = network.compute(pair.getInput());
+            OUTPUT = output.getData();
+
+            niter++;
+        } while (niter < bl);
+
+        Encog.getInstance().shutdown();
+
+        new ShapeTest(l);
+        Thread.sleep(1000 * 60);
+
+    }
+
 
 }

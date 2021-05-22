@@ -46,18 +46,25 @@ public class ShapeTest extends JFrame {
         int[] yxs = new int[l.size()];
         int[] y1s = new int[l.size()];
         int[] y2s = new int[l.size()];
+        int[] y3s = new int[l.size()];
         int i = 0;
         for (Double[] e: l) {
             xs[i] = 20 + i;
             yxs[i] = 450;
             y1s[i] = 450 + (int )(e[1] * 200);
             y2s[i] = 450 + (int )(e[2] * 200);
+            if (e.length == 4) {
+                y3s[i] = 450 + (int )(e[3] * 200);
+            }
             i++;
         }
         g.drawPolyline(xs, yxs, l.size());
         g.drawPolyline(xs, y2s, l.size());
         g.setColor(Color.BLUE);
         g.drawPolyline(xs, y1s, l.size());
-        g.setColor(Color.BLACK);
+        if (l.get(0).length == 4) {
+            g.setColor(Color.GREEN);
+            g.drawPolyline(xs, y3s, l.size());
+        }
     }
 }
