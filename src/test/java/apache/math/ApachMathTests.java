@@ -56,13 +56,13 @@ public class ApachMathTests {
             }
         }
 
-        final PolynomialCurveFitter fitter = PolynomialCurveFitter.create(15);
+        final PolynomialCurveFitter fitter = PolynomialCurveFitter.create(32);
         //final HarmonicCurveFitter fitter = HarmonicCurveFitter.create();
         final double[] coeff = fitter.fit(obs.toList());
         final PolynomialFunction pf = new PolynomialFunction(coeff);
         //final HarmonicOscillator pf = new HarmonicOscillator(coeff[0], coeff[1], coeff[2]);
 
-        SumOfTheSeries sumOfTheSeries = new SumOfTheSeries(Integer.MAX_VALUE, pf, 0.00001);
+        SumOfTheSeries sumOfTheSeries = new SumOfTheSeries(10, pf);
 
         List<Double[]> lst = new ArrayList<>();
 
@@ -164,9 +164,10 @@ public class ApachMathTests {
 
     }
 
-    private static double theSumOfTheSeries(int series, UnivariateFunction pf, double x, double accuracy) {
+    private static double theSumOfTheSeries(int series, UnivariateFunction pf, double x) {
         //UnivariateIntegrator integrator = new RombergIntegrator();
-        UnivariateIntegrator integrator = new MidPointIntegrator(0.1, 0.1, 8, 64);
+        UnivariateIntegrator integrator = new MidPointIntegrator(0.001, 0.001, 11, 64);
+        //UnivariateIntegrator integrator = new IterativeLegendreGaussIntegrator(10, 0.1, 0.1, 16, 64);
         double l = 2.0 * Math.PI;
         double a0 = (1/l) * integrator.integrate(Integer.MAX_VALUE, pf, -l, l);
         int n = 1;
@@ -179,7 +180,7 @@ public class ApachMathTests {
             double bn = (1 / l) * integrator.integrate(Integer.MAX_VALUE, bn1f, -l, l);
             inc = an * Math.cos((Math.PI * n * x)/l) + bn * Math.sin((Math.PI * n * x)/l);
             theSum += inc;
-            if (Math.abs(inc) < accuracy || n > series) {
+            if (n > series) {
                 break;
             }
             n++;
@@ -191,18 +192,16 @@ public class ApachMathTests {
 
         int series;
         UnivariateFunction pf;
-        double accuracy;
 
-        public SumOfTheSeries(int series, UnivariateFunction pf, double accuracy) {
+        public SumOfTheSeries(int series, UnivariateFunction pf) {
             super();
             this.series = series;
             this.pf = pf;
-            this.accuracy = accuracy;
         }
 
         @Override
         public double value(double x) {
-            return theSumOfTheSeries(series, pf, x, accuracy);
+            return theSumOfTheSeries(series, pf, x);
         }
 
     }
