@@ -431,7 +431,25 @@ public class EncogTests {
         //return Math.sin(x) + rmd.nextDouble() * 0.2 - rmd.nextDouble() * 0.2;
         //return 0.59 * a * Math.sin( f * x ) + rmd.nextDouble() * 0.2 - rmd.nextDouble() * 0.2;
         //return a * (Math.sin(f * x) + Math.sin(f * 2 * x))/2;
-        return 0.59 * (a * (Math.sin(f * x) + Math.sin(f * 2 * x))/2) + rmd.nextDouble() * 0.2 - rmd.nextDouble() * 0.2;
+        if (x > Math.PI) {
+            a = 2 * a * Math.tanh(x);
+        }
+        double bs = 0.59 * (a * (Math.sin(f * x) + Math.sin(f * 2 * x))/2);
+//        if (x > Math.PI) {
+//            bs = bs + Math.tanh(1 + x - Math.PI) * Math.sin(f * 4 * x);
+//            //bs = bs + Math.tanh(x) * Math.sin(f * 4 * x);
+//            //bs = bs * Math.tanh(1 + x - Math.PI);
+//        }
+        double whiteNoise = rmd.nextDouble() * 0.2 - rmd.nextDouble() * 0.2;
+        //bs = Math.abs( bs ) + whiteNoise;
+        bs =  bs  + whiteNoise;
+        if (x > 0.5 * Math.PI && x < 0.6 * Math.PI) {
+            bs = 0.0;
+        }
+        if (x >= 0.6 * Math.PI && x < 0.8 * Math.PI) {
+            bs = 1.0;
+        }
+        return bs;
     }
 
 
