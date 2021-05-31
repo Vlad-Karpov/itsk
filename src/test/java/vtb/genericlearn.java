@@ -35,6 +35,17 @@ public class genericlearn {
     public void jeneric_is_invarint() {
         //Number[] numberArray = new Integer[10];
         //List<Number> numberArray = new ArrayList<Integer>();  //compile error
+
+        //List<? extends Number> numberArray = new ArrayList<>();
+        //List<? super Number> numberArray = new ArrayList<>();
+        //numberArray.add(10);
+
+        List<? super Number> numberArray = new ArrayList<>();
+        numberArray.add(10);
+        numberArray.add(10.12d);
+        numberArray.add(10L);
+
+
     }
 
 
