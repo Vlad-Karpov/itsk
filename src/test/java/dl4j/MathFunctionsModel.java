@@ -61,11 +61,11 @@ public class MathFunctionsModel {
     //Random number generator seed, for reproducability
     public static final int seed = 12345;
     //Number of epochs (full passes of the data)
-    public static final int nEpochs = 3000;
+    public static final int nEpochs = 2000;
     //How frequently should we plot the network output?
     private static final int plotFrequency = 500;
     //Number of data points
-    private static final int nSamples = 2000;
+    private static final int nSamples = 1000;
     //Batch size: i.e., each epoch has nSamples/batchSize parameter updates
     public static final int batchSize = 100;
     //Network learning rate
@@ -91,6 +91,7 @@ public class MathFunctionsModel {
         net.setListeners(new ScoreIterationListener(1));
 
 
+        long t = System.currentTimeMillis();
         //Train the network on the full data set, and evaluate in periodically
         final INDArray[] networkPredictions = new INDArray[nEpochs / plotFrequency];
         for (int i = 0; i < nEpochs; i++) {
@@ -98,6 +99,8 @@ public class MathFunctionsModel {
             net.fit(iterator);
             if ((i + 1) % plotFrequency == 0) networkPredictions[i / plotFrequency] = net.output(x, false);
         }
+        t = System.currentTimeMillis() - t;
+        System.out.println("Time: " + (t / 1000) + " sec. and " + (t - t / 1000) + " msec.");
 
         //Plots the target data and the network predictions by default
         if (visualize) {
