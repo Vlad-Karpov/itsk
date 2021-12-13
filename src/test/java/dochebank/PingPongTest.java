@@ -100,4 +100,26 @@ public class PingPongTest {
         Thread.sleep(10L);
     }
 
+    @Test
+    public void reentrantLockTest() {
+        rl(0);
+    }
+
+    private int rl(int i){
+        Lock lock = new ReentrantLock();
+        try {
+            lock.lock();
+            if (i == 5) {
+                return 5;
+            }
+            System.out.println("Lock section " + i);
+            if (rl(i + 1) == 5) {
+                return 5;
+            }
+        } finally {
+            lock.unlock();
+        }
+        return 5;
+    }
+
 }

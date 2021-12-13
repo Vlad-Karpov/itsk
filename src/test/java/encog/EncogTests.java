@@ -3,8 +3,6 @@ package encog;
 import org.encog.ConsoleStatusReportable;
 import org.encog.Encog;
 import org.encog.engine.network.activation.ActivationTANH;
-import org.encog.mathutil.error.ErrorCalculation;
-import org.encog.mathutil.error.ErrorCalculationMode;
 import org.encog.ml.MLRegression;
 import org.encog.ml.data.MLData;
 import org.encog.ml.data.MLDataPair;
@@ -23,7 +21,6 @@ import org.encog.ml.model.EncogModel;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
 import org.encog.neural.networks.training.propagation.resilient.ResilientPropagation;
-import org.encog.util.arrayutil.VectorWindow;
 import org.encog.util.csv.CSVFormat;
 import org.encog.util.csv.ReadCSV;
 import org.encog.util.simple.EncogUtility;
@@ -88,32 +85,32 @@ public class EncogTests {
         System.out.println(helper.toString());
         System.out.println("Finalmodel : " + bestMethod);
 
-        ReadCSV csv = new ReadCSV (
-                irisFile , false , CSVFormat.DECIMAL_POINT) ;
+        ReadCSV csv = new ReadCSV(
+                irisFile, false, CSVFormat.DECIMAL_POINT);
 
 
-        String [] line = new String [ 4 ] ;
+        String[] line = new String[4];
         MLData input = helper.allocateInputVector();
-        while ( csv.next()) {
+        while (csv.next()) {
             StringBuilder result = new StringBuilder();
-            line [0] = csv.get(0);
-            line [1] = csv.get(1);
-            line [2] = csv.get(2);
-            line [3] = csv.get(3);
+            line[0] = csv.get(0);
+            line[1] = csv.get(1);
+            line[2] = csv.get(2);
+            line[3] = csv.get(3);
             String correct = csv.get(4);
             helper.normalizeInputVector(line, input.getData(), false);
             MLData output = bestMethod.compute(input);
             String irisChosen =
-                    helper.denormalizeOutputVectorToString ( output ) [ 0 ] ;
-            result.append ( Arrays.toString (line) ) ;
-            result.append ( " −> predicted : " ) ;
-            result.append ( irisChosen ) ;
-            result.append ( " (correct : " ) ;
-            result.append ( correct ) ;
-            result.append ( " ) " ) ;
-            System.out.println (result.toString()) ;
+                    helper.denormalizeOutputVectorToString(output)[0];
+            result.append(Arrays.toString(line));
+            result.append(" −> predicted : ");
+            result.append(irisChosen);
+            result.append(" (correct : ");
+            result.append(correct);
+            result.append(" ) ");
+            System.out.println(result.toString());
         }
-        Encog.getInstance ( ).shutdown( ) ;
+        Encog.getInstance().shutdown();
 
     }
 
@@ -154,36 +151,35 @@ public class EncogTests {
         List<Double[]> l = new ArrayList<>();
         double dBegin = (-2.0) * Math.PI;
         double dStep = 0.01;
-        String [] line;
+        String[] line;
         MLData input = helper.allocateInputVector();
         ds.rewind();
         line = ds.readLine();
-        while ( line != null) {
+        while (line != null) {
             StringBuilder result = new StringBuilder();
             String correct = line[1];
             helper.normalizeInputVector(line, input.getData(), false);
             MLData output = bestMethod.compute(input);
             String irisChosen =
-                    helper.denormalizeOutputVectorToString ( output ) [ 0 ] ;
-            result.append ( Arrays.toString (line) ) ;
-            result.append ( " −> predicted : " ) ;
-            result.append ( irisChosen ) ;
-            result.append ( " (correct : " ) ;
-            result.append ( correct ) ;
-            result.append ( " ) " ) ;
-            System.out.println (result) ;
+                    helper.denormalizeOutputVectorToString(output)[0];
+            result.append(Arrays.toString(line));
+            result.append(" −> predicted : ");
+            result.append(irisChosen);
+            result.append(" (correct : ");
+            result.append(correct);
+            result.append(" ) ");
+            System.out.println(result);
             line = ds.readLine();
             l.add(new Double[]{dBegin, output.getData(0), myFn(dBegin, 1, 1)});
             dBegin = dBegin + dStep;
         }
-        Encog.getInstance ( ).shutdown( ) ;
+        Encog.getInstance().shutdown();
 
         new ShapeTest(l);
         Thread.sleep(1000 * 30);
 
 
     }
-
 
 
     @Test
@@ -194,7 +190,7 @@ public class EncogTests {
 
         int cnt = 0;
         while (true) {
-            dBegin+=dStep;
+            dBegin += dStep;
             if (dBegin <= 2.0 * Math.PI) {
                 cnt++;
             } else {
@@ -211,7 +207,7 @@ public class EncogTests {
         cnt = 0;
         while (true) {
 
-            dBegin+=dStep;
+            dBegin += dStep;
             if (dBegin <= 2.0 * Math.PI) {
                 INPUT[cnt][0] = dBegin - dStep;
                 IDEAL[cnt][0] = myFn(INPUT[cnt][0], 1, 1);
@@ -222,16 +218,15 @@ public class EncogTests {
         }
 
 
-
         // create a neural network, without using a factory
         BasicNetwork network = new BasicNetwork();
-        network.addLayer(new BasicLayer(null,true,1));
-        network.addLayer(new BasicLayer(new ActivationTANH(),true,5));
-        network.addLayer(new BasicLayer(new ActivationTANH(),true,10));
-        network.addLayer(new BasicLayer(new ActivationTANH(),true,20));
-        network.addLayer(new BasicLayer(new ActivationTANH(),true,10));
-        network.addLayer(new BasicLayer(new ActivationTANH(),true,5));
-        network.addLayer(new BasicLayer(new ActivationTANH(),false,1));
+        network.addLayer(new BasicLayer(null, true, 1));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 5));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 10));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 20));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 10));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 5));
+        network.addLayer(new BasicLayer(new ActivationTANH(), false, 1));
         network.getStructure().finalizeStructure();
         network.reset();
 
@@ -249,13 +244,13 @@ public class EncogTests {
             train.iteration();
             System.out.println("Epoch #" + epoch + " Error:" + train.getError());
             epoch++;
-        } while( (train.getError() > 0.001) && (Math.abs(lastError - train.getError()) > 0.000000001) );
+        } while ((train.getError() > 0.001) && (Math.abs(lastError - train.getError()) > 0.000000001));
         train.finishTraining();
 
 
         // test the neural network
         System.out.println("Neural Network Results:");
-        for(MLDataPair pair: trainingSet ) {
+        for (MLDataPair pair : trainingSet) {
             final MLData output = network.compute(pair.getInput());
             System.out.println(pair.getInput().getData(0)
                     + ", actual=" + output.getData(0) + ",ideal=" + pair.getIdeal().getData(0));
@@ -278,7 +273,7 @@ public class EncogTests {
         dStep = 0.015;
         cnt = 0;
         while (true) {
-            dBegin+=dStep;
+            dBegin += dStep;
             if (dBegin <= 4.0 * Math.PI) {
                 pair = new BasicMLDataPair(new BasicMLData(new double[]{dBegin - dStep}));
                 output = network.compute(pair.getInput());
@@ -300,17 +295,119 @@ public class EncogTests {
     }
 
     @Test
+    public void test3_1() throws InterruptedException {
+
+        double dBegin = (-2.0) * Math.PI;
+        double dStep = 0.01;
+
+        int cnt = 0;
+        while (true) {
+            dBegin += dStep;
+            if (dBegin <= 2.0 * Math.PI) {
+                cnt++;
+            } else {
+                break;
+            }
+        }
+
+        double[] x = new double[cnt];
+        double[] y = new double[cnt];
+
+        double[][] INPUT = new double[cnt - 10][10];
+        double[][] IDEAL = new double[cnt - 10][1];
+
+        dBegin = (-2.0) * Math.PI;
+        dStep = 0.01;
+
+        cnt = 0;
+        while (true) {
+            dBegin += dStep;
+            if (dBegin <= 2.0 * Math.PI) {
+                x[cnt] = dBegin - dStep;
+                y[cnt] = myFn(dBegin - dStep, 1, 1);
+                cnt++;
+            } else {
+                break;
+            }
+        }
+
+        for (int j = 0; j < cnt - 10; j++) {
+            System.arraycopy(y, j, INPUT[j], 0, 10);
+            IDEAL[j][0] = y[j + 10];
+        }
+
+        // create a neural network, without using a factory
+        BasicNetwork network = new BasicNetwork();
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 10));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 5));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 10));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 20));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 10));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 5));
+        network.addLayer(new BasicLayer(new ActivationTANH(), false, 1));
+        network.getStructure().finalizeStructure();
+        network.reset();
+
+        MLDataSet trainingSet = new BasicMLDataSet(INPUT, IDEAL);
+        final ResilientPropagation train = new ResilientPropagation(network, trainingSet);
+        int epoch = 1;
+        double lastError;
+        do {
+            lastError = train.getError();
+            train.iteration();
+            System.out.println("Epoch #" + epoch + " Error:" + train.getError());
+            epoch++;
+        } while ((train.getError() > 0.001) && (Math.abs(lastError - train.getError()) > 0.000000001));
+        train.finishTraining();
+
+
+        List<Double[]> l = new ArrayList<>();
+
+        for (int j = 0; j < 10; j++) {
+            INPUT[0][j] = y[cnt - 10 + j];
+        }
+
+
+        dBegin = (-2.0) * Math.PI;
+        dStep = 0.015;
+        while (true) {
+            dBegin += dStep;
+            if (dBegin >= 2.0 * Math.PI) {
+                network.compute(INPUT[0], IDEAL[0]);
+                l.add(new Double[]{dBegin - dStep, IDEAL[0][0], myFn(dBegin - dStep, 1, 1)});
+                for (int j = 0; j < 9; j++) {
+                    INPUT[0][j] = INPUT[0][j + 1];
+                }
+                INPUT[0][9] = IDEAL[0][0];
+            } else {
+                l.add(new Double[]{dBegin - dStep, 0.0, myFn(dBegin - dStep, 1, 1)});
+            }
+            if (dBegin > 4.0 * Math.PI) {
+                break;
+            }
+        }
+
+
+        Encog.getInstance().shutdown();
+
+        new ShapeTest(l);
+        Thread.sleep(1000 * 60);
+
+    }
+
+
+    @Test
     public void test4() throws InterruptedException {
 
         // create a neural network, without using a factory
         BasicNetwork network = new BasicNetwork();
-        network.addLayer(new BasicLayer(null,true,2));
-        network.addLayer(new BasicLayer(new ActivationTANH(),true,10));
-        network.addLayer(new BasicLayer(new ActivationTANH(),true,15));
-        network.addLayer(new BasicLayer(new ActivationTANH(),true,20));
-        network.addLayer(new BasicLayer(new ActivationTANH(),true,15));
-        network.addLayer(new BasicLayer(new ActivationTANH(),true,10));
-        network.addLayer(new BasicLayer(new ActivationTANH(),false,1));
+        network.addLayer(new BasicLayer(null, true, 2));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 10));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 15));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 20));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 15));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 10));
+        network.addLayer(new BasicLayer(new ActivationTANH(), false, 1));
         network.getStructure().finalizeStructure();
         network.reset();
 
@@ -345,12 +442,12 @@ public class EncogTests {
             IDEAL = new double[cnt][1];
 
             dBegin = (-2.0) * Math.PI;
-            k=1;
+            k = 1;
             if (niter == 1) {
-                k=0.85;
+                k = 0.85;
             }
             if (niter == 2) {
-                k=0.7;
+                k = 0.7;
             }
 
             cnt = 0;
@@ -383,7 +480,7 @@ public class EncogTests {
 
             // test the neural network
             System.out.println("Neural Network Results:");
-            for(MLDataPair pair: trainingSet ) {
+            for (MLDataPair pair : trainingSet) {
                 final MLData output = network.compute(pair.getInput());
                 System.out.println(pair.getInput().getData(0)
                         + ", actual=" + output.getData(0) + ",ideal=" + pair.getIdeal().getData(0));
@@ -401,7 +498,7 @@ public class EncogTests {
         dStep = 0.015;
         cnt = 0;
         while (true) {
-            dBegin+=dStep;
+            dBegin += dStep;
             if (dBegin <= 4.0 * Math.PI) {
                 pair = new BasicMLDataPair(new BasicMLData(new double[]{dBegin - dStep, 2}));
                 output = network.compute(pair.getInput());
@@ -434,7 +531,7 @@ public class EncogTests {
         if (x > Math.PI) {
             a = 2 * a * Math.tanh(x);
         }
-        double bs = 0.59 * (a * (Math.sin(f * x) + Math.sin(f * 2 * x))/2);
+        double bs = 0.59 * (a * (Math.sin(f * x) + Math.sin(f * 2 * x)) / 2);
 //        if (x > Math.PI) {
 //            bs = bs + Math.tanh(1 + x - Math.PI) * Math.sin(f * 4 * x);
 //            //bs = bs + Math.tanh(x) * Math.sin(f * 4 * x);
@@ -442,7 +539,7 @@ public class EncogTests {
 //        }
         double whiteNoise = rmd.nextDouble() * 0.2 - rmd.nextDouble() * 0.2;
         //bs = Math.abs( bs ) + whiteNoise;
-        bs =  bs  + whiteNoise;
+        bs = bs + whiteNoise;
         if (x > 0.5 * Math.PI && x < 0.6 * Math.PI) {
             bs = 0.0;
         }
@@ -463,7 +560,7 @@ public class EncogTests {
             String[] result = new String[2];
             result[0] = String.format("%14.14f", dBegin);
             result[1] = String.format("%14.14f", myFn(dBegin, 1, 1));
-            dBegin+=dStep;
+            dBegin += dStep;
             if (dBegin <= 2.0 * Math.PI) {
                 return result;
             } else {
@@ -496,13 +593,13 @@ public class EncogTests {
 
         // create a neural network, without using a factory
         BasicNetwork network = new BasicNetwork();
-        network.addLayer(new BasicLayer(null,true,sz));
-        network.addLayer(new BasicLayer(new ActivationTANH(),true,10));
-        network.addLayer(new BasicLayer(new ActivationTANH(),true,15));
-        network.addLayer(new BasicLayer(new ActivationTANH(),true,20));
-        network.addLayer(new BasicLayer(new ActivationTANH(),true,15));
-        network.addLayer(new BasicLayer(new ActivationTANH(),true,10));
-        network.addLayer(new BasicLayer(new ActivationTANH(),false,sz));
+        network.addLayer(new BasicLayer(null, true, sz));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 10));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 15));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 20));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 15));
+        network.addLayer(new BasicLayer(new ActivationTANH(), true, 10));
+        network.addLayer(new BasicLayer(new ActivationTANH(), false, sz));
         network.getStructure().finalizeStructure();
         network.reset();
 
@@ -560,9 +657,10 @@ public class EncogTests {
             if (niter == 0) {
                 OUTPUT = INPUT[0];
             }
-            for(int i = 0; i < sz; i++) {
+            for (int i = 0; i < sz; i++) {
                 l.add(new Double[]{INPUTX[0][i], OUTPUT[i], INPUT[0][i]});
-            };
+            }
+            ;
             pair = new BasicMLDataPair(new BasicMLData(INPUT[0]));
             output = network.compute(pair.getInput());
             OUTPUT = output.getData();
